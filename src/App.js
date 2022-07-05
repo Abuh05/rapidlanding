@@ -1,10 +1,11 @@
 import './App.css';
 import Home from './component/Home';
+import PatientForm from './component/PatientForm';
 
 function App() {
   return (
     <div>
-      <Patient />
+      <PatientForm />
     </div>
   );
 }
