@@ -1,6 +1,36 @@
-import React from 'react'
+import React, { useState } from 'react';
+
+
+import { db } from "../firebase"
 
 const PatientForm = () => {
+
+  const [firstName, setName] = useState("");
+  const [lastName, setLast] = useState("");
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+
+const handleSubmit = (e) => {
+  e.preventDefault();
+
+  db.collection('contacts').add({
+    firstName: firstName,
+    lastName: lastName,
+    email: email,
+    message: message,
+  })
+  .then(() => {
+    alert("Message has been submitted");
+  })
+  .catch((error) => {
+    alert(error.message);
+  })
+  setName("");
+  setLast("");
+  setEmail("");
+  setMessage("");
+}
+
   return (
     <div className='relative antialised bg-[url("https://media.istockphoto.com/photos/african-american-video-conference-call-picture-id1276732131?k=20&m=1276732131&s=612x612&w=0&h=slZkHoOl8HmDd-UtD5w4mEZ3O5yBWd5D2UYTi1Q1y7U=")]  h-screen w-full bg-cover bg-center'>
       <div className='absolute inset-0 bg-indigo-700 bg-opacity-50'></div>
@@ -29,24 +59,27 @@ const PatientForm = () => {
           </div>
           <div>
           <div className='bg-white rounded-xl shadow-lg p-8 text-gray-600 md:w-80'>
-            <form action="" className='flex flex-col space-y-4'>
+            <form action="" onSubmit={handleSubmit}  className='flex flex-col space-y-4'>
               <div>
                 <label htmlFor="" className='text-sm'>First Name</label>
-                <input type="text" placeholder="Your FirstName"  className='mt-2 ring-1 ring-gray-300 w-full rounded-md px-4 py-2 outline-none focus:ring-2 focus:ring-teal-300' />
+                <input type="text" placeholder="Your FirstName"  className='mt-2 ring-1 ring-gray-300 w-full rounded-md px-4 py-2 outline-none focus:ring-2
+                 focus:ring-teal-300'value={firstName} onChange={(e) => setName(e.target.value)} />
               </div>
               <div>
                 <label htmlFor="" className='text-sm'>Last Name</label>
-                <input type="text" placeholder="Your LastName" className='mt-2 ring-1 ring-gray-300 w-full rounded-md px-4 py-2 outline-none focus:ring-2 focus:ring-teal-300' />
+                <input type="text" placeholder="Your LastName" className='mt-2 ring-1 ring-gray-300 w-full rounded-md px-4 py-2 outline-none focus:ring-2 
+                focus:ring-teal-300' value={lastName} onChange={(e) => setLast(e.target.value)}/>
               </div>
               <div>
                 <label htmlFor="" className='text-sm'>Email</label>
-                <input type="email" placeholder="Email" className='mt-2 ring-1 ring-gray-300 w-full rounded-md px-4 py-2 outline-none focus:ring-2 focus:ring-teal-300' />
+                <input type="email" placeholder="Email" className='mt-2 ring-1 ring-gray-300 w-full rounded-md px-4 py-2 outline-none focus:ring-2 
+                focus:ring-teal-300'  value={email} onChange={(e) => setEmail(e.target.value)} />
               </div>
               <div>
                 <label htmlFor="" className='text-sm'>Why do you want to see the doctor?</label>
                 <textarea
                 rows="4" placeholder="Kindly tell us about your challenge so that we can match you with the right doctor. Be detailed as much as possible"
-                 className='mt-2 ring-1 ring-gray-300 w-full rounded-md px-4 py-2 outline-none focus:ring-2 focus:ring-teal-300' ></textarea>
+                 className='mt-2 ring-1 ring-gray-300 w-full rounded-md px-4 py-2 outline-none focus:ring-2 focus:ring-teal-300' value={message} onChange={(e) => setMessage(e.target.value)} ></textarea>
               </div>
               <button className='inline-block self-end bg-indigo-500 text-white font-bold rounded-lg px-6 py-2  text-sm'>Book Appointment</button>
             </form>
